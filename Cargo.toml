@@ -1,6 +1,10 @@
 [package]
 name = "elotracker"
-version = "0.1.0"
+version = "1.0.0"
+authors = ["Ch0p5h0p"]
+description = "Elo-based ranking tracker"
+license = "MIT"
+repository = "https://github.com/Ch0p5h0p/EloTracker"
 edition = "2024"
 
 [dependencies]

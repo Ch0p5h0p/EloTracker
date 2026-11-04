@@ -2,7 +2,7 @@ use clap::{Args, Parser, Subcommand, ValueEnum};
 
 #[derive(Parser, Debug)]
 #[command(
-    name = "elo", 
+    name = "elotracker", 
     about = "Elo-based ranking tracker",
     group(
         clap::ArgGroup::new("storage")
