@@ -197,6 +197,10 @@ impl Data {
 
     pub fn display_top(&self, n: usize) {
         let mut sorted_players = self.players.clone();
+        if sorted_players.len() == 0 {
+            eprintln!("No players to rank");
+            std::process::exit(1);
+        }
         sorted_players.sort_by(|pa, pb| {
             pa.rating
                 .partial_cmp(&pb.rating)
