@@ -45,17 +45,20 @@ impl Data {
     }
 
     pub fn get_mut_pair(&mut self, id_a: u64, id_b: u64) -> (&mut Player, &mut Player) {
-        let mut players = self.players.iter_mut();
-        let player_a = players
-            .find(|p| p.id == id_a)
-            .ok_or(format!("Player {id_a} not found"))
-            .unwrap();
-        let player_b = players
-            .find(|p| p.id == id_b)
-            .ok_or(format!("Player {id_b} not found"))
-            .unwrap();
+        let index_a = self.players.iter().position(|p| p.id == id_a).unwrap();
+        let index_b = self.players.iter().position(|p| p.id == id_b).unwrap();
 
-        (player_a, player_b)
+        assert_ne!(index_a, index_b, "Cannot get the same player twice");
+
+        let (first, second) = if index_a < index_b {
+            let (left, right) = self.players.split_at_mut(index_b);
+            (&mut left[index_a], &mut right[0])
+        } else {
+            let (left, right) = self.players.split_at_mut(index_a);
+            (&mut right[0], &mut left[index_b])
+        };
+
+        (first, second)
     }
 
     pub fn update_player(
@@ -161,7 +164,9 @@ impl Data {
         for m in self.matches.iter() {
             let player_a = self.get_player_name(m.player_a);
             let player_b = self.get_player_name(m.player_b);
-            if player_a != playername && player_b != playername { continue }
+            if player_a != playername && player_b != playername {
+                continue;
+            }
 
             println!(
                 "│ {:<16} │ {:<16} │ {:^16} │",
@@ -218,11 +223,7 @@ impl Data {
             size = score_size + 3
         );
         if n == 0 {
-            println!(
-                "│ {:^size$} │",
-                "RANKING",
-                size = score_size + 33
-            );
+            println!("│ {:^size$} │", "RANKING", size = score_size + 33);
             println!(
                 "├{:─<size$}┬{:─<18}┬{:─<12}┤",
                 "",
