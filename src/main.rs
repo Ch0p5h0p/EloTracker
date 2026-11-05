@@ -1,16 +1,10 @@
-mod cli;
-mod config;
-mod matches;
-mod player;
-mod rating;
-mod scoring;
-mod storage;
-
 use clap::Parser;
 
-use cli::*;
-
-use crate::matches::Match;
+use elotracker::{
+    cli::*,
+    matches::Match,
+    *
+};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
@@ -83,12 +77,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     player_a.name, player_a.rating, player_b.name, player_b.rating
                 );
             }
-            MatchCommand::List { player } => {
-                match player {
-                    Some(name) => data.display_matches_by_player(name.as_str()),
-                    None => data.display_matches(),
-                }
-            }
+            MatchCommand::List { player } => match player {
+                Some(name) => data.display_matches_by_player(name.as_str()),
+                None => data.display_matches(),
+            },
         },
 
         Some(Command::Ranking { top }) => match top {
