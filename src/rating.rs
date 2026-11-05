@@ -19,8 +19,6 @@ pub fn update(a: &mut Player, b: &mut Player, game: &mut Match, k: f64) {
     let new_a = a.rating + k * (actual_a - expected_a);
     let new_b = b.rating + k * (actual_b - expected_b);
 
-    println!("A | init: {}, new: {}", a.rating, new_a);
-
     game.adjustment_a = new_a - a.rating;
     game.adjustment_b = new_b - b.rating;
 
