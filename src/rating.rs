@@ -6,7 +6,7 @@ pub fn expected(a: &Player, b: &Player) -> f64 {
     1.0 / (1.0 + 10.0_f64.powf((b.rating - a.rating) / 400.0))
 }
 
-pub fn update(a: &mut Player, b: &mut Player, game: &Match, k: f64) {
+pub fn update(a: &mut Player, b: &mut Player, game: &mut Match, k: f64) {
     if a.id != game.player_a || b.id != game.player_b {
         panic!("player IDs don't match.");
     }
@@ -18,6 +18,11 @@ pub fn update(a: &mut Player, b: &mut Player, game: &Match, k: f64) {
 
     let new_a = a.rating + k * (actual_a - expected_a);
     let new_b = b.rating + k * (actual_b - expected_b);
+
+    println!("A | init: {}, new: {}", a.rating, new_a);
+
+    game.adjustment_a = new_a - a.rating;
+    game.adjustment_b = new_b - b.rating;
 
     a.rating = new_a;
     b.rating = new_b;

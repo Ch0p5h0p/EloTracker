@@ -137,30 +137,32 @@ impl Data {
     }
 
     pub fn display_matches(&self) {
-        println!("┌{:─<18}┬{:─<18}┬{:─<18}┐", "", "", "");
+        println!("┌{:─<18}┬{:─<18}┬{:─<18}┬{:─<18}┬{:─<22}┐", "", "", "", "", "");
         println!(
-            "│ {:<16} │ {:<16} │ {:<16} │",
-            "Player 1", "Player 2", "Score"
+            "│ {:<16} │ {:<16} │ {:<16} │ {:<16} │ {:<20} │",
+            "Player 1", "Player 2", "Score", "Adjustment", "Timestamp"
         );
-        println!("├{:─<18}┼{:─<18}┼{:─<18}┤", "", "", "");
+        println!("├{:─<18}┼{:─<18}┼{:─<18}┼{:─<18}┼{:─<22}┤", "", "", "", "", "");
         for m in self.matches.iter() {
             println!(
-                "│ {:<16} │ {:<16} │ {:^16} │",
+                "│ {:<16} │ {:<16} │ {:^16} │ {:^16} │ {:^20} │",
                 self.get_player_name(m.player_a),
                 self.get_player_name(m.player_b),
-                format_scores(m.score_a, m.score_b, self.get_player_name(m.player_a))
+                format_scores(m.score_a, m.score_b, self.get_player_name(m.player_a)),
+                format!("{:+.2}, {:+.2}", m.adjustment_a, m.adjustment_b),
+                m.timestamp
             );
         }
-        println!("└{:─<18}┴{:─<18}┴{:─<18}┘", "", "", "");
+        println!("└{:─<18}┴{:─<18}┴{:─<18}┴{:─<18}┴{:─<22}┘", "", "", "", "", "");
     }
 
     pub fn display_matches_by_player(&self, playername: &str) {
-        println!("┌{:─<18}┬{:─<18}┬{:─<18}┐", "", "", "");
+        println!("┌{:─<18}┬{:─<18}┬{:─<18}┬{:─<18}┐", "", "", "", "");
         println!(
-            "│ {:<16} │ {:<16} │ {:<16} │",
-            "Player 1", "Player 2", "Score"
+            "│ {:<16} │ {:<16} │ {:<16} │ {:<16} │",
+            "Player 1", "Player 2", "Score", "Adjustment"
         );
-        println!("├{:─<18}┼{:─<18}┼{:─<18}┤", "", "", "");
+        println!("├{:─<18}┼{:─<18}┼{:─<18}┼{:─<18}┤", "", "", "", "");
         for m in self.matches.iter() {
             let player_a = self.get_player_name(m.player_a);
             let player_b = self.get_player_name(m.player_b);
@@ -169,13 +171,14 @@ impl Data {
             }
 
             println!(
-                "│ {:<16} │ {:<16} │ {:^16} │",
+                "│ {:<16} │ {:<16} │ {:^16} │ {:^16} │",
                 self.get_player_name(m.player_a),
                 self.get_player_name(m.player_b),
-                format_scores(m.score_a, m.score_b, self.get_player_name(m.player_a))
+                format_scores(m.score_a, m.score_b, self.get_player_name(m.player_a)),
+                format!("{:+.2}, {:+.2}", m.adjustment_a, m.adjustment_b)
             );
         }
-        println!("└{:─<18}┴{:─<18}┴{:─<18}┘", "", "", "");
+        println!("└{:─<18}┴{:─<18}┴{:─<18}┴{:─<18}┘", "", "", "", "");
     }
 
     pub fn save(&self) -> Result<(), Box<dyn std::error::Error>> {

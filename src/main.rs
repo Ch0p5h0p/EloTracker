@@ -65,17 +65,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     _ => unreachable!(),
                 };
 
-                let m = Match::new(player_a_id, player_b_id, scores);
+                let mut m = Match::new(player_a_id, player_b_id, scores);
                 let k = data.config.k;
+                {
+                    let (player_a, player_b) = data.get_mut_pair(player_a_id, player_b_id);
+                    rating::update(player_a, player_b, &mut m, k);
+                    println!(
+                        "{} -> {:.2}, {} -> {:.2}",
+                        player_a.name, player_a.rating, player_b.name, player_b.rating
+                    );
+                }
+
                 data.add_match(&m);
-                let (player_a, player_b) = data.get_mut_pair(player_a_id, player_b_id);
 
-                rating::update(player_a, player_b, &m, k);
-
-                println!(
-                    "{} -> {:.2}, {} -> {:.2}",
-                    player_a.name, player_a.rating, player_b.name, player_b.rating
-                );
             }
             MatchCommand::List { player } => match player {
                 Some(name) => data.display_matches_by_player(name.as_str()),
