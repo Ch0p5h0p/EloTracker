@@ -44,6 +44,14 @@ impl Data {
             .clone()
     }
 
+    pub fn get_players(&self) -> Vec<Player> {
+        self.players.clone()
+    }
+
+    pub fn get_matches(&self) -> Vec<Match> {
+        self.matches.clone()
+    }
+
     pub fn get_mut_pair(&mut self, id_a: u64, id_b: u64) -> (&mut Player, &mut Player) {
         let index_a = self.players.iter().position(|p| p.id == id_a).unwrap();
         let index_b = self.players.iter().position(|p| p.id == id_b).unwrap();
